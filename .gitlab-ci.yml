@@ -1,0 +1,36 @@
+stages:
+  - build
+  - test
+  - deploy
+
+
+build-job:
+  tags:
+    - shared
+  stage: build
+  script:
+    - echo "Compiling code"
+    - docker build -t subscription-backend . # TODO: deploy with using docker
+    - echo "Compiling code is completed"
+
+unit-test-job:
+  tags:
+    - shared
+  stage: test
+  script:
+    - echo "Running tests..."
+    - docker run --rm subscription-backend venv/bin/python3 -m unittest tests.test_auth
+    - echo "Tests have been finished"
+
+deploy-job:
+  only:
+    - main
+  tags:
+    - shared
+  stage: deploy
+  script:
+    - echo "Deploying application"
+    - mkdir -p /home/gitlab-runner/tel_subscriptions
+    - rsync -av ./ /home/gitlab-runner/tel_subscriptions --exclude=.git
+    - echo "Application successfully deployed"
+  when: manual

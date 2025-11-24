@@ -1,0 +1,28 @@
+name: Telegram subscriptions application
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set python 3.14
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.14"
+      - name: Build project
+        run: |
+          docker build -t subscription-backend .
+          docker run --rm subscription-backend venv/bin/python3 -m unittest tests.test_auth
+
+      - name: Deploy
+        run: |
+          echo "Deploy..."

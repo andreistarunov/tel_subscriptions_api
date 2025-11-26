@@ -1,0 +1,40 @@
+name: Telegram subscriptions application
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions: read-all
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set python 3.14
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.14"
+      - name: Build project
+        run: |
+          docker build -t subscription-backend .
+      - name: Tests is running
+        run: |
+          docker run --rm subscription-backend venv/bin/python3 -m unittest tests.test_auth
+
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          password: ${{ secrets.PASSWORD }}
+          script: |
+            cd ${{ secrets.PROJECT_PATH }}
+            git pull origin main

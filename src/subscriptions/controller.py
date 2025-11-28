@@ -1,7 +1,8 @@
 from uuid import UUID
 
-from fastapi import APIRouter, status
+from fastapi import APIRouter
 
+from src.auth.service import AuthenticatedUser
 from .models import SubscriptionsRequest
 from .service import add_subscription, delete_subscription
 from ..database.core import DbSession
@@ -12,7 +13,7 @@ router = APIRouter(
 )
 
 @router.post('/')
-def create_subscription(subscription: SubscriptionsRequest, db: DbSession):
+def create_subscription(subscription: SubscriptionsRequest, db: DbSession, current_user: AuthenticatedUser):
     return add_subscription(
         title=subscription.title,
         description=subscription.description,

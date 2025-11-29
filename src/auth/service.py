@@ -85,7 +85,7 @@ def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]) -> TokenData
     return verify_token(token)
 
 
-CurrentUser = Annotated[TokenData, Depends(get_current_user)]
+AuthenticatedUser = Annotated[TokenData, Depends(get_current_user)]
 
 
 def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: Session) -> Token:

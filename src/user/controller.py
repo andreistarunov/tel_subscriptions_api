@@ -1,7 +1,7 @@
 from fastapi import APIRouter, status
 
 from . import models, service
-from ..auth.service import CurrentUser
+from ..auth.service import AuthenticatedUser
 from ..database.core import DbSession
 
 router = APIRouter(
@@ -10,7 +10,7 @@ router = APIRouter(
 )
 
 @router.get("/me", response_model=models.UserResponse)
-async def current_user(current_user: CurrentUser, db: DbSession):
+async def current_user(current_user: AuthenticatedUser, db: DbSession):
     return service.get_user_by_uuid(
         user_uuid=current_user.user_id,
         db=db
@@ -20,7 +20,7 @@ async def current_user(current_user: CurrentUser, db: DbSession):
 async def change_password(
         password_change: models.PasswordChange,
         db: DbSession,
-        current_user: CurrentUser
+        current_user: AuthenticatedUser
 ):
     service.change_password(
         db=db,

@@ -107,13 +107,13 @@ def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm, Depen
         expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     )
 
-    saved_token = SavedToken(
-        token=token,
-        user_id=user.id
-    )
+    # saved_token = SavedToken(
+    #     token=token,
+    #     user_id=user.id
+    # )
 
-    db.add(saved_token)
-    db.commit()
+    # db.add(saved_token)
+    # db.commit()
 
     return Token(
         access_token=token,

@@ -38,5 +38,6 @@ def create_subscription(subscription: SubscriptionsRequest, db: DbSession, curre
 def remove_subscription(id: UUID, db: DbSession, current_user: AuthenticatedUser):
     return delete_subscription(
         id=id,
+        user_id=current_user.user_id,
         db=db
     )

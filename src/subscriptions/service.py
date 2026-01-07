@@ -24,8 +24,8 @@ def add_subscription(title: str, description: str, price: float, days: int, user
     return s_id
 
 
-def delete_subscription(id: UUID, db: Session):
-    db.execute(delete(Subscriptions).where(Subscriptions.id == id, ))
+def delete_subscription(id: UUID, user_id: UUID, db: Session):
+    db.execute(delete(Subscriptions).where(Subscriptions.id == id, Subscriptions.user_id == user_id, ))
     db.commit()
 
 

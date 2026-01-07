@@ -17,9 +17,9 @@ router = APIRouter(
 )
 
 
-@router.get('/{user_id}')
-def get_subscriptions_by_user_id(user_id: UUID, db: DbSession):
-    return get_subscriptions_by_user(user_id=user_id, db=db)
+@router.get('/')
+def get_subscriptions(db: DbSession, current_user: AuthenticatedUser):
+    return get_subscriptions_by_user(user_id=current_user.user_id, db=db)
 
 
 @router.post('/')
@@ -29,7 +29,7 @@ def create_subscription(subscription: SubscriptionsRequest, db: DbSession, curre
         description=subscription.description,
         price=subscription.price,
         days=subscription.days,
-        user_id=subscription.seller_id,
+        user_id=current_user.user_id,
         db=db
     )
 

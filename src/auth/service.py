@@ -11,10 +11,9 @@ from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
 from src.entities.users import Users
-from src.entities.tokens import Token as SavedToken
 
-from ..exceptions import AuthenticationError, UserNotFoundError
-from .models import RegisterUserRequest, Token, TokenData
+from src.exceptions import AuthenticationError, UserNotFoundError
+from src.auth.models import RegisterUserRequest, Token, TokenData
 
 SECRET_KEY = environ.get("SECRET_KEY", "")
 ALGORITHM = "HS256"
@@ -22,6 +21,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/token")
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     return bcrypt_context.verify(secret=plain_password, hash=hashed_password)
@@ -76,6 +76,8 @@ def register_user(db: Session, register_user_request: RegisterUserRequest) -> Us
         )
         db.add(create_user_model)
         db.commit()
+
+        return create_user_model
     except Exception as e:
         print(e)
         raise Exception(f"Failed to register user {register_user_request.model_dump()}")
@@ -106,14 +108,6 @@ def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm, Depen
         user_id=user.id,
         expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     )
-
-    # saved_token = SavedToken(
-    #     token=token,
-    #     user_id=user.id
-    # )
-
-    # db.add(saved_token)
-    # db.commit()
 
     return Token(
         access_token=token,

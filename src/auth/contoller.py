@@ -3,9 +3,8 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, Request, status
 from fastapi.security import OAuth2PasswordRequestForm
 
-from . import models
-from . import service
-from ..database.core import DbSession
+from src.auth import models, service
+from src.database.core import DbSession
 
 router = APIRouter(
     prefix="/auth",
@@ -15,7 +14,7 @@ router = APIRouter(
 
 @router.post(path="/register", status_code=status.HTTP_201_CREATED)
 async def register_user(request: Request, db: DbSession, register_user_request: models.RegisterUserRequest):
-    service.register_user(
+    return service.register_user(
         db=db,
         register_user_request=register_user_request
     )

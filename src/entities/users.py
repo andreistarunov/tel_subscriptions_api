@@ -2,7 +2,7 @@ from datetime import datetime
 from uuid import uuid4
 
 from sqlalchemy import TIMESTAMP, UUID, Column, String
-from sqlalchemy.orm import foreign, relationship
+from sqlalchemy.orm import relationship
 
 from ..database.core import Base
 
@@ -17,4 +17,3 @@ class Users(Base):
     created_at = Column(TIMESTAMP, default=datetime.now())
 
     subscriptions = relationship("Subscriptions", back_populates="user")
-    tokens = relationship("Token", back_populates="user")

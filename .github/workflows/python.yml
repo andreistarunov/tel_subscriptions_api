@@ -20,9 +20,11 @@ jobs:
       - name: Build project
         run: |
           docker build -t subscription-backend .
+          docker compose up -d
+          docker run --rm subscription-backend venv/bin/poetry run python init_db.py
       - name: Tests is running
         run: |
-          docker run --rm subscription-backend venv/bin/python3 -m unittest tests.test_auth
+          docker run --rm subscription-backend venv/bin/poetry run python -m unittest tests.test_auth
 
   deploy:
     runs-on: ubuntu-latest

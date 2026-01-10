@@ -1,14 +1,18 @@
-from src.database.core import engine
+from logging import getLogger
 
-from src.entities.users import Users
-from src.entities.customers import Customer
-from src.entities.subscriptions import Subscriptions
-from src.entities.tokens import Token
+from sqlalchemy.exc import SQLAlchemyError
+
+from src.database.core import Base, engine
+
+logger = getLogger(__name__)
 
 
-Users.__table__.create(engine)
-Customer.__table__.create(engine)
-Subscriptions.__table__.create(engine)
-Token.__table__.create(engine)
+def init_db():
+    try:
+        Base.metadata.create_all(bind=engine)
+        logger.info("Database initialized successfully")
+    except SQLAlchemyError as e:
+        logger.exception("Database initialization failed")
 
-# test string 2
+
+init_db()

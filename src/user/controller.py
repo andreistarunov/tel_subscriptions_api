@@ -1,8 +1,8 @@
 from fastapi import APIRouter, status
 
-from . import models, service
-from ..auth.service import AuthenticatedUser
-from ..database.core import DbSession
+from src.user import models, service
+from src.auth.service import AuthenticatedUser
+from src.database.core import DbSession
 
 router = APIRouter(
     prefix="/password",

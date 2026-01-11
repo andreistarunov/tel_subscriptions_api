@@ -7,7 +7,6 @@ class SubscriptionsRequest(BaseModel):
     description: str
     price: float
     days: int
-    seller_id: UUID
 
 class SubscriptionsResponse(BaseModel):
     id: UUID

@@ -3,8 +3,8 @@ from uuid import uuid4
 from sqlalchemy import UUID, Column, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
-from ..database.core import Base
-from .users import Users
+from src.database.core import Base
+from src.entities.users import Users
 
 
 class Subscriptions(Base):
@@ -18,3 +18,9 @@ class Subscriptions(Base):
     user_id = Column(UUID, ForeignKey(Users.id))
 
     user = relationship("Users", back_populates="subscriptions")
+    customers_subscriptions = relationship(
+        "CustomersSubscriptions",
+        back_populates="subscription",
+        foreign_keys="CustomersSubscriptions.subscription_id",
+        cascade="all, delete-orphan",
+    )

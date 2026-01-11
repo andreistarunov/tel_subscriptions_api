@@ -3,7 +3,8 @@ from fastapi import APIRouter
 from src.auth.service import AuthenticatedUser
 from src.customers_subscription.models import (
     CreateCustomersSubscriptionResponse,
-    GetCustomersSubscriptionListByUserIdResponse, CreateCustomersSubscriptionRequest
+    GetCustomersSubscriptionListByUserIdResponse,
+    CreateCustomersSubscriptionRequest
 )
 from src.customers_subscription.service import (
     get_customers_subscription_by_user_id,
@@ -30,7 +31,7 @@ def create_customers_subscription(
         customers_subscription: CreateCustomersSubscriptionRequest,
         db: DbSession,
         current_user: AuthenticatedUser
-) -> CreateCustomersSubscriptionResponse:
+):
     return add_customers_subscription(db=db, entity=customers_subscription)
 
 

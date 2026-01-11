@@ -1,3 +1,4 @@
+from logging import error
 from uuid import UUID
 
 from sqlalchemy.orm import Session
@@ -38,21 +39,15 @@ def get_customers_subscription_by_user_id(user_id: UUID, db: Session) -> GetCust
     )
 
 
-def add_customers_subscription(entity: CreateCustomersSubscriptionRequest, db: Session) -> CreateCustomersSubscriptionResponse:
+def add_customers_subscription(entity: CreateCustomersSubscriptionRequest, db: Session):
     try:
-        cust_subs = CustomersSubscriptions(*entity)
+        cust_subs = CustomersSubscriptions(**entity.dict())
         db.add(cust_subs)
         db.commit()
 
-        return CreateCustomersSubscriptionResponse(
-            success=True,
-            data=entity
-        )
+        return cust_subs
     except Exception as e:
-        return CreateCustomersSubscriptionResponse(
-            success=False,
-            data=entity
-        )
+        error(e)
 
 
 def unactive_customers_subscription(subs_id: UUID, db: Session):

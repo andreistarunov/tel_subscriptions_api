@@ -20,7 +20,7 @@ def add_subscription(title: str, description: str, price: float, days: int, user
     db.add(subs)
     db.commit()
 
-    return s_id
+    return subs
 
 
 def delete_subscription(id: UUID, user_id: UUID, db: Session):

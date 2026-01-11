@@ -79,7 +79,6 @@ def register_user(db: Session, register_user_request: RegisterUserRequest) -> Us
 
         return create_user_model
     except Exception as e:
-        print(e)
         raise Exception(f"Failed to register user {register_user_request.model_dump()}")
 
 
@@ -98,7 +97,6 @@ def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm, Depen
     )
 
     if not user:
-        print(form_data)
         raise AuthenticationError()
 
     # TODO: make check existing token

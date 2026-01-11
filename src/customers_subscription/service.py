@@ -49,7 +49,6 @@ def add_customers_subscription(entity: CreateCustomersSubscriptionRequest, db: S
             data=entity
         )
     except Exception as e:
-        print(e)
         return CreateCustomersSubscriptionResponse(
             success=False,
             data=entity

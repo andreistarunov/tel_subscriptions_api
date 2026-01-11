@@ -31,7 +31,7 @@ def create_customers_subscription(
         db: DbSession,
         current_user: AuthenticatedUser
 ) -> CreateCustomersSubscriptionResponse:
-    return add_customers_subscription(db=db)
+    return add_customers_subscription(db=db, entity=customers_subscription)
 
 
 @router.patch("/{subs_id}")

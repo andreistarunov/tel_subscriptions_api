@@ -1,18 +1,15 @@
 from logging import getLogger
 
-from sqlalchemy.exc import SQLAlchemyError
-
+import src.entities
 from src.database.core import Base, engine
+
 
 logger = getLogger(__name__)
 
 
 def init_db():
-    try:
-        Base.metadata.create_all(bind=engine)
-        logger.info("Database initialized successfully")
-    except SQLAlchemyError as e:
-        logger.exception("Database initialization failed")
+    Base.metadata.create_all(bind=engine)
+    logger.info("Database initialized successfully")
 
 
 init_db()

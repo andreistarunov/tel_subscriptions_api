@@ -37,12 +37,12 @@ class TestAuth(unittest.TestCase):
             "days": randint(0, 10000),
             "user_id": self.user.id,
         }
-        sub_id = add_subscription(
+        subscription = add_subscription(
             **prepared,
             db=self.db
         )
 
-        subs = self.db.execute(statement=select(Subscriptions).where(Subscriptions.id == sub_id, )).fetchall()
+        subs = self.db.execute(statement=select(Subscriptions).where(Subscriptions.id == subscription.id, )).fetchall()
 
         self.assertEqual(
             first=1,
@@ -54,13 +54,11 @@ class TestAuth(unittest.TestCase):
         )
 
         for key, value in subs[0][0].__dict__.items():
-            if key in ("_sa_instance_state", "id"):
-                continue
-
-            self.assertEqual(
-                first=prepared.get(key),
-                second=value
-            )
+            if key not in ("_sa_instance_state", "id"):
+                self.assertEqual(
+                    first=prepared.get(key),
+                    second=value
+                )
 
     def test_get_subscriptions_by_user(self):
         # Arrange
@@ -89,13 +87,11 @@ class TestAuth(unittest.TestCase):
         )
 
         for key, value in subs[0].items():
-            if key in ("_sa_instance_state", "id"):
-                continue
-
-            self.assertEqual(
-                first=prepared.get(key),
-                second=value
-            )
+            if key not in ("_sa_instance_state", "id"):
+                self.assertEqual(
+                    first=prepared.get(key),
+                    second=value
+                )
 
     def test_delete_subscription(self):
         prepared = {
@@ -105,18 +101,18 @@ class TestAuth(unittest.TestCase):
             "days": randint(0, 10000),
             "user_id": self.user.id,
         }
-        sub_id = add_subscription(
+        subscription = add_subscription(
             **prepared,
             db=self.db
         )
 
         # Act
         delete_subscription(
-            id=sub_id,
+            id=subscription.id,
             user_id=self.user.id,
             db=self.db
         )
-        subs = self.db.execute(statement=select(Subscriptions).where(Subscriptions.id == sub_id, )).fetchall()
+        subs = self.db.execute(statement=select(Subscriptions).where(Subscriptions.id == subscription.id, )).fetchall()
 
         # Assert
         self.assertEqual(

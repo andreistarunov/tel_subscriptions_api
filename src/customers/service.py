@@ -1,3 +1,4 @@
+from logging import error
 from uuid import UUID
 
 from sqlalchemy import select
@@ -20,7 +21,7 @@ def add_customer(entity: CreateCustomerRequest, db: DbSession) -> CreateCustomer
 
         return customer
     except Exception as e:
-        raise
+        error(msg=e)
 
 
 def get_customers_by_user_id(user_id: UUID, db: DbSession):
@@ -33,8 +34,8 @@ def get_customers_by_user_id(user_id: UUID, db: DbSession):
         ).fetchall()
 
         return [
-            cust[0].__dict__
-            for cust in customers
+            customer[0].__dict__
+            for customer in customers
         ]
     except Exception as e:
-        raise
+        error(msg=e)

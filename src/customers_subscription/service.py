@@ -1,3 +1,4 @@
+from logging import error
 from uuid import UUID
 
 from sqlalchemy.orm import Session
@@ -46,8 +47,7 @@ def add_customers_subscription(entity: CreateCustomersSubscriptionRequest, db: S
 
         return cust_subs
     except Exception as e:
-
-        return e
+        error(e)
 
 
 def unactive_customers_subscription(subs_id: UUID, db: Session):

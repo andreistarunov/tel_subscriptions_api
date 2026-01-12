@@ -7,7 +7,7 @@ from sqlalchemy import func, select
 from src.customers_subscription.models import (
     GetCustomersSubscriptionListByUserIdResponse,
     CustomersSubscription,
-    CreateCustomersSubscriptionRequest, CreateCustomersSubscriptionResponse
+    CreateCustomersSubscriptionRequest,
 )
 
 from src.entities import (
@@ -41,7 +41,7 @@ def get_customers_subscription_by_user_id(user_id: UUID, db: Session) -> GetCust
 
 def add_customers_subscription(entity: CreateCustomersSubscriptionRequest, db: Session):
     try:
-        cust_subs = CustomersSubscriptions(**entity.dict())
+        cust_subs = CustomersSubscriptions(**entity.model_dump())
         db.add(cust_subs)
         db.commit()
 

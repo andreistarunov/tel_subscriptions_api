@@ -1,16 +1,15 @@
 FROM python:3.14
 
-ENV PYTHON_ENV_PATH=venv/bin/python3
 ENV POETRY_ENV_PATH=venv/bin/poetry
 
 WORKDIR /app
 
-COPY pyproject.toml pyproject.toml
-COPY poetry.lock poetry.lock
+COPY pyproject.toml poetry.lock ./
 
-RUN python3 -m venv venv
-RUN $PYTHON_ENV_PATH -m pip install poetry
-RUN $POETRY_ENV_PATH env use 3.14
-RUN $POETRY_ENV_PATH install --no-root
+RUN pip install poetry
+# RUN $POETRY_ENV_PATH env use 3.14
+RUN poetry install --no-root
 
 COPY . .
+
+CMD ["poetry", "run", "uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]

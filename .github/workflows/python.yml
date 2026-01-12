@@ -19,12 +19,13 @@ jobs:
           python-version: "3.14"
       - name: Build project
         run: |
-          docker build -t subscription-backend .
+          docker build -t subscriptions-backend .
           docker compose up -d
-          docker run --rm subscription-backend venv/bin/poetry run python init_db.py
+      - name: Run migrations
+        run: docker exec subscriptions_api poetry run python3 init_db.py
       - name: Tests is running
         run: |
-          docker run --rm subscription-backend venv/bin/poetry run python -m unittest tests.test_auth
+          docker exec subscriptions_api poetry run python3 -m unittest discover -v tests
 
   deploy:
     runs-on: ubuntu-latest

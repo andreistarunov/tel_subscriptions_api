@@ -26,7 +26,7 @@ class CustomersSubscriptions(Base):
 
     is_active = Column(Boolean, default=True, nullable=False)
     expired_at = Column(TIMESTAMP)
-    created_at = Column(TIMESTAMP, default=datetime.utcnow)
+    created_at = Column(TIMESTAMP, default=datetime.now())
 
     customer = relationship(
         "Customers",

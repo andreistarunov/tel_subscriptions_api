@@ -11,7 +11,7 @@ from src.auth.models import RegisterUserRequest
 from src.customers.models import CreateCustomerRequest
 from src.customers.service import (
     add_customer,
-    get_users_customers
+    get_customers_by_user_id
 )
 from src.auth.service import register_user
 from src.customers_subscription.models import CreateCustomersSubscriptionRequest
@@ -110,7 +110,7 @@ class TestCustomers(unittest.TestCase):
         )
 
         # Assert
-        customers = get_users_customers(
+        customers = get_customers_by_user_id(
             user_id=user.id,
             db=self.db
         )

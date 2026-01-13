@@ -15,7 +15,7 @@ from src.entities import Customers, CustomersSubscriptions, Subscriptions
 
 def add_customer(entity: CreateCustomerRequest, db: DbSession) -> CreateCustomerResponse:
     try:
-        customer = Customers(**entity.dict())
+        customer = Customers(**entity.model_dump())
         db.add(customer)
         db.commit()
 
